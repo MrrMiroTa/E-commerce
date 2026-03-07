@@ -10,20 +10,23 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
+    <!-- Khmer Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Khmer+OS+Siemreap&display=swap" rel="stylesheet">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JS (loaded first to avoid conflicts) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Alpine.js -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     
     <!-- Custom Styles -->
     <style>
         body { font-family: 'Inter', sans-serif; }
+        .khmer-font { font-family: 'Khmer OS Siemreap', cursive; }
         .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .product-card { transition: all 0.3s ease; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
@@ -34,7 +37,7 @@
     
     @yield('styles')
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 {{ app()->getLocale() == 'kh' ? 'khmer-font' : '' }}">
     <!-- Navigation -->
     <nav class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,6 +70,24 @@
 
                 <!-- Right Navigation -->
                 <div class="flex items-center space-x-4">
+                    <!-- Language Switcher -->
+                    <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+                        <button @click="open = !open" class="flex items-center space-x-1 text-gray-600 hover:text-indigo-600 transition p-2" title="{{ __('messages.language') }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                            </svg>
+                            <span class="text-sm font-medium">{{ app()->getLocale() == 'kh' ? 'KH' : 'EN' }}</span>
+                        </button>
+                        <div x-show="open" x-transition
+                            class="absolute right-0 mt-2 w-28 bg-white rounded-md shadow-lg py-1 border border-gray-100 z-50">
+                            <a href="{{ route('language.switch', 'en') }}" @click="open = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ app()->getLocale() == 'en' ? 'bg-gray-50 font-medium' : '' }}">
+                                🇬🇧 English
+                            </a>
+                            <a href="{{ route('language.switch', 'kh') }}" @click="open = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ app()->getLocale() == 'kh' ? 'bg-gray-50 font-medium' : '' }}">
+                                🇰🇭 Khmer
+                            </a>
+                        </div>
+                    </div>
                     <a href="{{ route('shop.cart') }}" class="relative p-2 text-gray-600 hover:text-indigo-600 transition">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
@@ -84,17 +105,17 @@
                     
                     <!-- Info Links -->
                     <div class="hidden md:flex items-center space-x-2">
-                        <a href="{{ route('shop.shipping') }}" class="p-2 text-gray-600 hover:text-indigo-600 transition text-sm" title="Shipping Info">
+                        <a href="{{ route('shop.shipping') }}" class="p-2 text-gray-600 hover:text-indigo-600 transition text-sm" title="{{ __('messages.shipping_info') }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
                             </svg>
                         </a>
-                        <a href="{{ route('shop.faq') }}" class="p-2 text-gray-600 hover:text-indigo-600 transition text-sm" title="FAQ">
+                        <a href="{{ route('shop.faq') }}" class="p-2 text-gray-600 hover:text-indigo-600 transition text-sm" title="{{ __('messages.faq') }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </a>
-                        <a href="{{ route('shop.contact') }}" class="p-2 text-gray-600 hover:text-indigo-600 transition text-sm" title="Contact Us">
+                        <a href="{{ route('shop.contact') }}" class="p-2 text-gray-600 hover:text-indigo-600 transition text-sm" title="{{ __('messages.contact') }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>

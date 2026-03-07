@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Set locale from session if available
+        $locale = session('locale', 'en');
+        if (in_array($locale, ['en', 'kh'])) {
+            app()->setLocale($locale);
+        }
     }
 }

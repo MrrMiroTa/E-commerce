@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Us')
+@section('title', __('messages.contact_us'))
 
 @section('styles')
 <style>
@@ -28,9 +28,9 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ __('messages.contact_us') }}</h1>
             <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                {{ app()->getLocale() == 'kh' ? 'តេីអ្នកមានសំណួរ? យើងចង់ឮពីអ្នក។ ផ្ញើសារមកយើងហើយយើងនឹងឆ្លើយតបឱ្យបានលឿនតាមដែលអាចធ្វើបាន។' : 'Have questions? We\'d love to hear from you. Send us a message and we\'ll respond as soon as possible.' }}
             </p>
         </div>
 
@@ -44,36 +44,36 @@
                         @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition" id="name" name="name" required placeholder="Your name">
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">{{ __('messages.name') }}</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition" id="name" name="name" required placeholder="{{ __('messages.your_name') }}">
                             </div>
                             
                             <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                                <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition" id="email" name="email" required placeholder="your@email.com">
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">{{ __('messages.email') }}</label>
+                                <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition" id="email" name="email" required placeholder="{{ __('messages.your_email') }}">
                             </div>
                         </div>
                         
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone (Optional)</label>
-                            <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition" id="phone" name="phone" placeholder="+855 12 345 678">
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">{{ __('messages.phone_optional') }}</label>
+                            <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition" id="phone" name="phone" placeholder="{{ __('messages.phone_placeholder') }}">
                         </div>
                         
                         <div>
-                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">{{ __('messages.subject') }}</label>
                             <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition" id="subject" name="subject" required>
-                                <option value="">Select a subject</option>
-                                <option value="order">Order Inquiry</option>
-                                <option value="product">Product Question</option>
-                                <option value="shipping">Shipping Question</option>
-                                <option value="return">Returns & Refunds</option>
-                                <option value="other">Other</option>
+                                <option value="">{{ __('messages.select_subject') }}</option>
+                                <option value="order">{{ __('messages.subject_order') }}</option>
+                                <option value="product">{{ __('messages.subject_product') }}</option>
+                                <option value="shipping">{{ __('messages.subject_shipping') }}</option>
+                                <option value="return">{{ __('messages.subject_return') }}</option>
+                                <option value="other">{{ __('messages.subject_other') }}</option>
                             </select>
                         </div>
                         
                         <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                            <textarea class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition" id="message" name="message" rows="5" required placeholder="How can we help you?"></textarea>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-2">{{ __('messages.message') }}</label>
+                            <textarea class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition" id="message" name="message" rows="5" required placeholder="{{ __('messages.message_placeholder') }}"></textarea>
                         </div>
                         
                         <button type="submit" class="w-full gradient-bg text-white font-semibold py-3 px-6 rounded-lg hover:opacity-90 transition transform hover:scale-[1.02]">

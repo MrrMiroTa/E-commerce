@@ -8,7 +8,7 @@
         <!-- Breadcrumb -->
         <nav class="flex mb-8" aria-label="Breadcrumb">
             <ol class="flex items-center space-x-2">
-                <li><a href="{{ route('shop.index') }}" class="text-gray-500 hover:text-indigo-600">Shop</a></li>
+                <li><a href="{{ route('shop.index') }}" class="text-gray-500 hover:text-indigo-600">{{ __('messages.shop') }}</a></li>
                 <li><span class="text-gray-400">/</span></li>
                 <li><a href="{{ route('shop.index', ['category' => $product->category_id]) }}" class="text-gray-500 hover:text-indigo-600">{{ $product->category->name }}</a></li>
                 <li><span class="text-gray-400">/</span></li>
@@ -54,10 +54,10 @@
                 <div class="flex items-center gap-2 mb-6">
                     @if($product->is_in_stock)
                         <span class="w-3 h-3 bg-green-500 rounded-full"></span>
-                        <span class="text-green-600 font-medium">In Stock ({{ $product->stock_quantity }} available)</span>
+                        <span class="text-green-600 font-medium">{{ __('messages.in_stock') }} ({{ $product->stock_quantity }} {{ app()->getLocale() == 'kh' ? 'មាន' : 'available' }})</span>
                     @else
                         <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-                        <span class="text-red-600 font-medium">Out of Stock</span>
+                        <span class="text-red-600 font-medium">{{ __('messages.out_of_stock') }}</span>
                     @endif
                 </div>
 
@@ -80,7 +80,7 @@
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        <span class="btn-text">Add to Cart</span>
+                        <span class="btn-text">{{ __('messages.add_to_cart') }}</span>
                     </button>
                 </div>
                 @endif

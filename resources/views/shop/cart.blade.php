@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Shopping Cart')
+@section('title', __('messages.cart'))
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <h1 class="text-3xl font-bold text-gray-800 mb-8">Shopping Cart</h1>
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">{{ __('messages.cart') }}</h1>
 
     @if(count($cartItems) > 0)
         <div class="flex flex-col lg:flex-row gap-8">

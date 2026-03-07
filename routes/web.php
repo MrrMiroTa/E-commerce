@@ -8,6 +8,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
+// Language Switcher (needs web middleware for session)
+Route::middleware('web')->group(function () {
+    Route::get('/language/{locale}', function ($locale) {
+        if (in_array($locale, ['en', 'kh'])) {
+            session(['locale' => $locale]);
+            app()->setLocale($locale);
+        }
+        return redirect()->back();
+    })->name('language.switch');
+});
+
 // Shop Routes (Public)
 Route::get('/', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/products/{product:slug}', [ShopController::class, 'show'])->name('shop.show');

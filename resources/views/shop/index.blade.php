@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Shop')
+@section('title', __('messages.shop'))
 
 @section('content')
 <!-- Hero Section -->
 <section class="gradient-bg text-white py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Welcome to UAShop</h1>
-            <p class="text-xl opacity-90 mb-8">Discover amazing products at unbeatable prices</p>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ app()->getLocale() == 'kh' ? ' សូមស្វាគមន៍មកកាន់UAShop' : 'Welcome to UAShop' }}</h1>
+            <p class="text-xl opacity-90 mb-8">{{ app()->getLocale() == 'kh' ? ' ស្វែងរកផលិតផល អស្ចារ្យ និងតម្លៃ សមរម្យ' : 'Discover amazing products at unbeatable prices' }}</p>
             <a href="#products" class="inline-block bg-white text-indigo-600 font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition">
-                Shop Now
+                {{ app()->getLocale() == 'kh' ? 'ទិញឥឡូវ' : 'Shop Now' }}
             </a>
         </div>
     </div>
@@ -20,7 +20,7 @@
 @if($featuredProducts->count() > 0)
 <section class="py-12 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-2xl font-bold text-gray-800 mb-8">Featured Products</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-8">{{ app()->getLocale() == 'kh' ? ' ផលិតផល ពេញនិយម' : 'Featured Products' }}</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($featuredProducts as $product)
             <div class="product-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
