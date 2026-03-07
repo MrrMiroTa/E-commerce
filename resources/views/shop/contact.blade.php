@@ -7,6 +7,19 @@
     .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
     .contact-card { transition: all 0.3s ease; }
     .contact-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    
+    /* Responsive text handling for long content */
+    .contact-info-text {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    /* Ensure contact info cards handle variable content heights */
+    .contact-info-card {
+        min-height: auto;
+        height: auto;
+    }
 </style>
 @endsection
 
@@ -73,7 +86,7 @@
             <!-- Contact Info -->
             <div class="space-y-6">
                 <!-- Address -->
-                <div class="bg-white rounded-2xl shadow-lg p-6 contact-card">
+                <div class="bg-white rounded-2xl shadow-lg p-6 contact-card contact-info-card">
                     <div class="flex items-start space-x-4">
                         <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center flex-shrink-0">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,9 +94,9 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
                         </div>
-                        <div>
+                        <div class="min-w-0 flex-1">
                             <h3 class="font-semibold text-gray-900">📍 Address</h3>
-                            <p class="text-gray-600 mt-1">
+                            <p class="text-gray-600 mt-1 contact-info-text">
                                 Phnom Penh, Cambodia<br>
                                 123 Main Street
                             </p>
@@ -92,16 +105,16 @@
                 </div>
 
                 <!-- Phone -->
-                <div class="bg-white rounded-2xl shadow-lg p-6 contact-card">
+                <div class="bg-white rounded-2xl shadow-lg p-6 contact-card contact-info-card">
                     <div class="flex items-start space-x-4">
                         <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center flex-shrink-0">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                             </svg>
                         </div>
-                        <div>
+                        <div class="min-w-0 flex-1">
                             <h3 class="font-semibold text-gray-900">📞 Phone</h3>
-                            <p class="text-gray-600 mt-1">
+                            <p class="text-gray-600 mt-1 contact-info-text">
                                 +855 12 345 678<br>
                                 <span class="text-sm text-gray-500">Mon - Fri: 9AM - 6PM</span>
                             </p>
@@ -110,16 +123,16 @@
                 </div>
 
                 <!-- Email -->
-                <div class="bg-white rounded-2xl shadow-lg p-6 contact-card">
+                <div class="bg-blue-100 rounded-2xl shadow-lg p-6 contact-card contact-info-card">
                     <div class="flex items-start space-x-4">
                         <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center flex-shrink-0">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
                         </div>
-                        <div>
+                        <div class="min-w-0 flex-1">
                             <h3 class="font-semibold text-gray-900">✉️ Email</h3>
-                            <p class="text-gray-600 mt-1">
+                            <p class="text-gray-600 mt-1 contact-info-text">
                                 support@example.com<br>
                                 sales@example.com
                             </p>
@@ -128,16 +141,16 @@
                 </div>
 
                 <!-- Live Chat -->
-                <div class="bg-white rounded-2xl shadow-lg p-6 contact-card">
+                <div class="bg-white rounded-2xl shadow-lg p-6 contact-card contact-info-card">
                     <div class="flex items-start space-x-4">
                         <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center flex-shrink-0">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                             </svg>
                         </div>
-                        <div class="flex-1">
+                        <div class="min-w-0 flex-1">
                             <h3 class="font-semibold text-gray-900">💬 Live Chat</h3>
-                            <p class="text-gray-600 mt-1">
+                            <p class="text-gray-600 mt-1 contact-info-text">
                                 Available 24/7<br>
                                 <button type="button" class="mt-2 gradient-bg text-white text-sm font-medium py-2 px-4 rounded-lg hover:opacity-90 transition">
                                     Start Chat
