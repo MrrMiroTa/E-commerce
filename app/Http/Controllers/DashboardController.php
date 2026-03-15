@@ -230,11 +230,22 @@ class DashboardController extends Controller
             'is_active'       => 'boolean',
             'is_featured'     => 'boolean',
             'image'           => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image_url'       => 'nullable|url',
         ]);
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
+            try {
+                $imagePath = $request->file('image')->store('products', 'public');
+            } catch (\Exception $e) {
+                // If file upload fails (e.g., Vercel), use URL if provided
+                if ($request->image_url) {
+                    $imagePath = $request->image_url;
+                }
+            }
+        } elseif ($request->image_url) {
+            // Use URL input for image
+            $imagePath = $request->image_url;
         }
 
         Product::create([
@@ -274,6 +285,7 @@ class DashboardController extends Controller
             'is_active'       => 'boolean',
             'is_featured'     => 'boolean',
             'image'           => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image_url'       => 'nullable|url',
         ]);
 
         $data = [
@@ -290,11 +302,21 @@ class DashboardController extends Controller
         ];
 
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($product->image) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image);
+            try {
+                // Delete old image if exists
+                if ($product->image && !str_starts_with($product->image, 'http')) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image);
+                }
+                $data['image'] = $request->file('image')->store('products', 'public');
+            } catch (\Exception $e) {
+                // If file upload fails (e.g., Vercel), use URL if provided
+                if ($request->image_url) {
+                    $data['image'] = $request->image_url;
+                }
             }
-            $data['image'] = $request->file('image')->store('products', 'public');
+        } elseif ($request->image_url) {
+            // Use URL input for image
+            $data['image'] = $request->image_url;
         }
 
         $product->update($data);

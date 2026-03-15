@@ -40,8 +40,8 @@
             <h2 class="text-base font-semibold text-gray-800 mb-4">Product Image</h2>
             <div class="flex items-start gap-6">
                 <div class="w-32 h-32 bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-200 flex-shrink-0">
-                    @if($product->image_url)
-                        <img id="imagePreview" src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                    @if($product->image)
+                        <img id="imagePreview" src="{{ $product->image_url ?? $product->image }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
                     @else
                         <img id="imagePreview" src="" alt="Preview" class="w-full h-full object-cover hidden">
                         <svg id="imagePlaceholder" class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,12 +51,17 @@
                 </div>
                 <div class="flex-1">
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        {{ $product->image_url ? 'Replace Image' : 'Upload Image' }}
+                        {{ $product->image ? 'Replace Image' : 'Upload Image' }}
                     </label>
                     <input type="file" name="image" id="imageInput" accept="image/jpeg,image/png,image/jpg,image/webp"
                         onchange="previewImage(this)"
                         class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
                     <p class="text-xs text-gray-400 mt-2">JPEG, PNG, WebP — max 2MB. Leave blank to keep current image.</p>
+                    <div class="mt-3 pt-3 border-t border-gray-200">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Or paste Image URL</label>
+                        <input type="url" name="image_url" id="imageUrlInput" value="{{ old('image_url', $product->image) }}" placeholder="https://example.com/image.jpg"
+                            class="block w-full text-sm text-gray-500 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
                 </div>
             </div>
         </div>
