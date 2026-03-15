@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/stock/{product}', [DashboardController::class, 'updateStock'])->name('stock.update');
         Route::get('/orders', [DashboardController::class, 'orders'])->name('orders');
         Route::put('/orders/{order}/status', [DashboardController::class, 'updateOrderStatus'])->name('orders.status');
+        Route::get('/orders/{order}/details', [DashboardController::class, 'orderDetails'])->name('orders.details');
         // Product management
         Route::get('/products/create', [DashboardController::class, 'createProduct'])->name('products.create');
         Route::post('/products', [DashboardController::class, 'storeProduct'])->name('products.store');

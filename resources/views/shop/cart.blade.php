@@ -33,7 +33,7 @@
                             </a>
                             <p class="text-sm text-gray-500 mt-1">{{ $item['product']->category->name }}</p>
                             @if($item['product']->is_low_stock)
-                                <p class="text-xs text-orange-500 mt-1">Only {{ $item['product']->stock_quantity }} left!</p>
+                                <p class="text-xs text-orange-500 mt-1">{{ __('messages.only_left', ['count' => $item['product']->stock_quantity]) }}</p>
                             @endif
                         </div>
 
@@ -53,7 +53,7 @@
                         <!-- Price -->
                         <div class="text-right min-w-[100px]">
                             <p class="font-semibold text-gray-800">${{ number_format($item['total'], 2) }}</p>
-                            <p class="text-sm text-gray-500">${{ number_format($item['price'], 2) }} each</p>
+                            <p class="text-sm text-gray-500">${{ number_format($item['price'], 2) }} {{ __('messages.each') }}</p>
                         </div>
 
                         <!-- Remove -->
@@ -76,7 +76,7 @@
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
-                        Continue Shopping
+                        {{ __('messages.continue_shopping') }}
                     </a>
                 </div>
             </div>
@@ -84,11 +84,11 @@
             <!-- Cart Summary -->
             <div class="w-full lg:w-96">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sticky top-24">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Order Summary</h2>
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">{{ __('messages.order_summary') }}</h2>
                     
                     <div class="space-y-3 mb-6">
                         <div class="flex justify-between text-gray-600">
-                            <span>Subtotal</span>
+                            <span>{{ __('messages.subtotal') }}</span>
                             <span>${{ number_format($total, 2) }}</span>
                         </div>
                         {{-- Tax and Shipping calculations are disabled
@@ -109,7 +109,7 @@
 
                     <div class="border-t pt-4 mb-6">
                         <div class="flex justify-between text-xl font-bold text-gray-800">
-                            <span>Total</span>
+                            <span>{{ __('messages.total') }}</span>
                             <span>${{ number_format($total, 2) }}</span>
                         </div>
                         {{-- Free shipping upsell message disabled
@@ -121,14 +121,14 @@
 
                     @auth
                     <a href="{{ route('shop.checkout') }}" class="block w-full btn-primary text-white font-semibold py-3 px-8 rounded-lg hover:opacity-90 transition text-center">
-                        Proceed to Checkout
+                        {{ __('messages.proceed_to_checkout') }}
                     </a>
                     @else
                     <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4 text-center">
-                        <p class="text-gray-700 mb-3">Please login to complete your checkout</p>
+                        <p class="text-gray-700 mb-3">{{ __('messages.please_login') }}</p>
                         <div class="flex gap-2 justify-center">
-                            <a href="{{ route('login') }}?redirect={{ route('shop.cart') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">Login</a>
-                            <a href="{{ route('register') }}" class="bg-white text-indigo-600 border border-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition">Register</a>
+                            <a href="{{ route('login') }}?redirect={{ route('shop.cart') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">{{ __('messages.login') }}</a>
+                            <a href="{{ route('register') }}" class="bg-white text-indigo-600 border border-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition">{{ __('messages.register') }}</a>
                         </div>
                     </div>
                     @endauth
@@ -136,7 +136,7 @@
                     <form action="{{ route('shop.cart.clear') }}" method="POST" class="mt-3">
                         @csrf
                         <button type="submit" class="block w-full text-gray-500 hover:text-red-600 transition text-center text-sm">
-                            Clear Cart
+                            {{ __('messages.clear_cart') }}
                         </button>
                     </form>
                 </div>
@@ -149,10 +149,10 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
             </div>
-            <h2 class="text-2xl font-semibold text-gray-800 mb-2">Your cart is empty</h2>
-            <p class="text-gray-500 mb-6">Looks like you haven't added any products to your cart yet.</p>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ __('messages.empty_cart') }}</h2>
+            <p class="text-gray-500 mb-6">{{ __('messages.looks_like_you_havent_added') }}</p>
             <a href="{{ route('shop.index') }}" class="inline-block btn-primary text-white font-semibold py-3 px-8 rounded-lg hover:opacity-90 transition">
-                Start Shopping
+                {{ __('messages.start_shopping') }}
             </a>
         </div>
     @endif

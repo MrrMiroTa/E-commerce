@@ -90,7 +90,7 @@
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Order # or customer..."
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Order 4-digit number or customer..."
                    class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500 w-64">
         </div>
         <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">
@@ -114,31 +114,19 @@
         <table class="w-full">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="text-left py-4 px-6 text-sm font-semibold text-gray-600">Order #</th>
-                    <th class="text-left py-4 px-6 text-sm font-semibold text-gray-600">Customer</th>
-                    <th class="text-left py-4 px-6 text-sm font-semibold text-gray-600">Items</th>
+                    <th class="text-left py-4 px-6 text-sm font-semibold text-gray-600">ID</th>
                     <th class="text-left py-4 px-6 text-sm font-semibold text-gray-600">Total</th>
                     <th class="text-left py-4 px-6 text-sm font-semibold text-gray-600">Status</th>
                     <th class="text-left py-4 px-6 text-sm font-semibold text-gray-600">Payment</th>
                     <th class="text-left py-4 px-6 text-sm font-semibold text-gray-600">Date</th>
-                    <th class="text-left py-4 px-6 text-sm font-semibold text-gray-600">Actions</th>
+                    <th class="text-left py-4 px-6 text-sm font-semibold text-gray-600">Action</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($orders as $order)
-                <tr class="border-b border-gray-50 hover:bg-gray-50 transition duration-150">
+                <tr class="border-b border-gray-50 hover:bg-gray-50 transition duration-150 cursor-pointer" onclick="toggleOrderDetails({{ $order->id }})">
                     <td class="py-4 px-6">
-                        <span class="font-bold text-indigo-600">#{{ $order->order_number }}</span>
-                    </td>
-                    <td class="py-4 px-6">
-                        <p class="font-semibold text-gray-800">{{ $order->customer_name }}</p>
-                        <p class="text-sm text-gray-500">{{ $order->customer_email }}</p>
-                    </td>
-                    <td class="py-4 px-6">
-                        <div class="flex items-center gap-2">
-                            <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-bold">{{ $order->items->sum('quantity') }}</span>
-                            <span class="text-gray-600">items</span>
-                        </div>
+                        <span class="font-bold text-indigo-600">#{{ $order->id }}</span>
                     </td>
                     <td class="py-4 px-6">
                         <span class="text-lg font-bold text-gray-800">${{ number_format($order->total, 2) }}</span>
@@ -165,43 +153,18 @@
                     </td>
                     <td class="py-4 px-6">
                         <p class="text-sm text-gray-600">{{ $order->created_at->format('M d, Y') }}</p>
-                        <p class="text-xs text-gray-400">{{ $order->created_at->format('h:i A') }}</p>
                     </td>
                     <td class="py-4 px-6">
-                        @if($order->status !== 'cancelled' && $order->status !== 'delivered')
-                        <button onclick="openStatusModal({{ $order->id }}, '{{ $order->order_number }}', '{{ $order->status }}')" 
+                        <button onclick="event.stopPropagation(); openOrderDetailsModal({{ $order->id }}, '{{ $order->order_number }}')" 
                                 class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 font-medium text-sm bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                            Update
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            View
                         </button>
-                        @else
-                        <span class="text-gray-400 text-sm">Completed</span>
-                        @endif
-                    </td>
-                </tr>
-                
-                <!-- Order Items Preview -->
-                <tr class="bg-gray-50/50">
-                    <td colspan="8" class="py-3 px-6">
-                        <div class="flex flex-wrap gap-3">
-                            @foreach($order->items as $item)
-                            <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm">
-                                <div class="w-8 h-8 rounded bg-indigo-100 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                                </div>
-                                <span class="font-medium text-gray-800 text-sm">{{ $item->product_name }}</span>
-                                <span class="text-gray-400 text-sm">×</span>
-                                <span class="text-gray-600 font-semibold text-sm">{{ $item->quantity }}</span>
-                                <span class="text-gray-400">=</span>
-                                <span class="font-bold text-gray-700 text-sm">${{ number_format($item->total, 2) }}</span>
-                            </div>
-                            @endforeach
-                        </div>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" class="py-16 text-center">
+                    <td colspan="6" class="py-16 text-center">
                         <div class="flex flex-col items-center">
                             <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
                                 <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -257,6 +220,35 @@
         </form>
     </div>
 </div>
+
+<!-- Order Details Modal -->
+<div id="orderDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full mx-4 p-6 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-800">Order Details</h3>
+            <button onclick="closeOrderDetailsModal()" class="text-gray-500 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        
+        <div id="orderDetailsContent" class="space-y-6">
+            <!-- Content loaded via AJAX -->
+            <div class="text-center py-8">
+                <svg class="animate-spin h-8 w-8 text-indigo-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="mt-2 text-gray-500">Loading order details...</p>
+            </div>
+        </div>
+        
+        <div class="mt-6 pt-4 border-t border-gray-200 flex gap-3">
+            <button onclick="closeOrderDetailsModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -281,10 +273,40 @@
         modal.classList.remove('flex');
     }
     
+    function openOrderDetailsModal(orderId, orderNumber) {
+        const modal = document.getElementById('orderDetailsModal');
+        const content = document.getElementById('orderDetailsContent');
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        
+        // Load order details via fetch
+        fetch(`{{ url('dashboard/orders') }}/${orderId}/details`)
+            .then(response => response.text())
+            .then(html => {
+                content.innerHTML = html;
+            })
+            .catch(error => {
+                content.innerHTML = `<div class="text-center py-8 text-red-500">Error loading order details</div>`;
+            });
+    }
+    
+    function closeOrderDetailsModal() {
+        const modal = document.getElementById('orderDetailsModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+    
     // Close modal on outside click
     document.getElementById('statusModal').addEventListener('click', function(e) {
         if (e.target === this) {
             closeStatusModal();
+        }
+    });
+    
+    document.getElementById('orderDetailsModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeOrderDetailsModal();
         }
     });
 </script>

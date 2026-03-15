@@ -73,4 +73,14 @@ return [
     'error' => 'Error',
     'added_to_cart' => 'Product added to cart!',
     'removed_from_cart' => 'Product removed from cart!',
+    
+    // Cart specific
+    'order_summary' => 'Order Summary',
+    'proceed_to_checkout' => 'Proceed to Checkout',
+    'please_login' => 'Please login to complete your checkout',
+    'clear_cart' => 'Clear Cart',
+    'looks_like_you_havent_added' => "Looks like you haven't added any products to your cart yet.",
+    'start_shopping' => 'Start Shopping',
+    'only_left' => 'Only :count left!',
+    'each' => 'each',
 ];

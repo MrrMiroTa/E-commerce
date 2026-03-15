@@ -160,25 +160,26 @@ class DashboardController extends Controller
         $query = Order::with('items');
 
         // Filter by status
-        if ($request->has('status') && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
         // Filter by date range
-        if ($request->has('date_from')) {
+        if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
         }
-        if ($request->has('date_to')) {
+        if ($request->filled('date_to')) {
             $query->whereDate('created_at', '<=', $request->date_to);
         }
 
-        // Search by order number or customer
-        if ($request->has('search')) {
+        // Search by order number, customer, or ID
+        if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('order_number', 'like', "%{$search}%")
                   ->orWhere('customer_name', 'like', "%{$search}%")
-                  ->orWhere('customer_email', 'like', "%{$search}%");
+                  ->orWhere('customer_email', 'like', "%{$search}%")
+                  ->orWhere('id', $search);
             });
         }
 
@@ -200,6 +201,13 @@ class DashboardController extends Controller
         $order->save();
 
         return back()->with('success', 'Order status updated successfully!');
+    }
+
+    public function orderDetails(Order $order)
+    {
+        $order->load('items');
+        
+        return view('dashboard.partials.order-details', compact('order'))->render();
     }
 
     public function createProduct()

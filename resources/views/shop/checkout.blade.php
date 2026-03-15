@@ -9,7 +9,7 @@
     <div class="flex flex-col lg:flex-row gap-8">
         <!-- Checkout Form -->
         <div class="flex-1">
-            <form id="checkout-form" action="{{ route('shop.checkout.store') }}" method="POST" class="space-y-6">
+            <form id="checkout-form" action="{{ route('shop.checkout.store') }}" method="POST" class="space-y-6" enctype="multipart/form-data">
                 @csrf
                 
                 <!-- Contact Information -->
@@ -116,7 +116,7 @@
                             <input type="radio" name="payment_method" value="card" {{ old('payment_method') == 'card' ? 'checked' : '' }} class="text-indigo-600 focus:ring-indigo-500">
                             <span class="ml-3 flex-1">
                                 <span class="font-medium text-gray-800">Credit Card</span>
-                                <p class="text-sm text-gray-500">Pay securely with your credit card</p>
+                                <p class="text-sm text-gray-500">Pay securely with your credit card (PayPal)</p>
                             </span>
                         </label>
                         <label class="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-indigo-500 transition">
@@ -130,6 +130,105 @@
                     @error('payment_method')
                         <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
                     @enderror
+
+                    <!-- Cash on Delivery Info -->
+                    <div id="payment-cash" class="payment-form mt-4 p-4 bg-green-50 rounded-lg border border-green-200" style="display: block;">
+                        <p class="text-green-700">You will pay <strong>${{ number_format($grandTotal, 2) }}</strong> when your order is delivered to your address.</p>
+                    </div>
+
+                    <!-- Credit Card Form (PayPal Sandbox) -->
+                    <div id="payment-card" class="payment-form mt-4" style="display: none;">
+                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <p class="text-blue-700 mb-4">Pay securely using PayPal Sandbox. You will be redirected to PayPal to complete payment.</p>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
+                                    <input type="text" name="card_number" placeholder="1234 5678 9012 3456" 
+                                           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500"
+                                           maxlength="19">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+                                        <input type="text" name="card_expiry" placeholder="MM/YY" 
+                                               class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500"
+                                               maxlength="5">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+                                        <input type="text" name="card_cvv" placeholder="123" 
+                                               class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500"
+                                               maxlength="4">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Cardholder Name</label>
+                                    <input type="text" name="card_name" placeholder="John Doe" 
+                                           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500">
+                                </div>
+                                <div class="flex items-center gap-2 mt-2">
+                                    <span class="text-xs text-gray-500">Secure payment powered by PayPal Sandbox</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bank Transfer Form -->
+                    <div id="payment-bank_transfer" class="payment-form mt-4" style="display: none;">
+                        <div class="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                            <p class="text-purple-700 mb-4">Transfer the total amount to one of our bank accounts below and upload the payment proof.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <img src="https://yt3.googleusercontent.com/ytc/AIdro_ljV-vXKHv8x9yHY_Z6RuI9jutIh6f8D0O1oYIY43fJiNo=s900-c-k-c0x00ffffff-no-rj" alt="ABA Bank Logo" class="w-10 h-10 rounded-lg object-cover">
+                                        <span class="font-semibold text-gray-800">ABA Bank</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600">Account Name: DOEUN SOPHORS</p>
+                                    <p class="text-sm text-gray-600">Account Number: 004 279 332</p>
+                                    <div class="mt-2 p-2 bg-white border border-gray-200 rounded-lg inline-block">
+                                        <img src="{{ asset('aba.jpg') }}" alt="ABA QR Code" class="w-32 h-32">
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <img src="https://play-lh.googleusercontent.com/weU8O2dHEQffcEyHeK11qTUMS-AQvlHW1IolQDM1XLuZN0ggl6Zr9kUwBqHwXr7i5T0" alt="Aceleda Bank Logo" class="w-10 h-10 rounded-lg object-cover">
+                                        <span class="font-semibold text-gray-800">Aceleda Bank</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600">Account Name: DEOUN SOPHORS</p>
+                                    <p class="text-sm text-gray-600">Account Number: 099 390 353</p>
+                                    <div class="mt-2 p-2 bg-white border border-gray-200 rounded-lg inline-block">
+                                        <img src="{{ asset('aceleda.jpg') }}" alt="Aceleda QR Code" class="w-32 h-32">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Upload Payment Proof (Screenshot/Photo)</label>
+                                <input type="file" name="payment_proof" accept="image/*" 
+                                       class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500">
+                                <p class="text-xs text-gray-500 mt-1">Please upload a screenshot or photo of your transfer receipt</p>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Transfer Reference (Optional)</label>
+                                <input type="text" name="transfer_reference" placeholder="Transaction ID from bank app" 
+                                       class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Message Box -->
+                <div id="payment-error" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div class="flex-1">
+                            <p id="payment-error-message" class="text-red-700"></p>
+                            <button type="button" onclick="document.getElementById('payment-error').classList.add('hidden')" class="mt-2 text-sm text-red-600 hover:text-red-800 font-medium">
+                                Continue filling form
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Order Notes -->
@@ -230,12 +329,72 @@
         document.getElementById('grand-total-display').textContent = '$' + grandTotal.toFixed(2);
         document.getElementById('mobile-total').textContent = '$' + grandTotal.toFixed(2);
         document.getElementById('shipping-note').textContent = note;
+        
+        const cashMsg = document.querySelector('#payment-cash p');
+        if (cashMsg) {
+            cashMsg.innerHTML = 'You will pay <strong>$' + grandTotal.toFixed(2) + '</strong> when your order is delivered to your address.';
+        }
     }
 
-    // Initialize on page load if province was pre-selected (e.g. old() value)
-    const provinceSelect = document.getElementById('province');
-    if (provinceSelect && provinceSelect.value) {
-        updateShipping(provinceSelect.value);
+    function togglePaymentForm(method) {
+        var forms = document.getElementsByClassName('payment-form');
+        for (var i = 0; i < forms.length; i++) {
+            forms[i].style.display = 'none';
+        }
+        
+        var selectedForm = document.getElementById('payment-' + method);
+        if (selectedForm) {
+            selectedForm.style.display = 'block';
+        }
     }
+
+    window.onload = function() {
+        var radios = document.getElementsByName('payment_method');
+        for (var i = 0; i < radios.length; i++) {
+            radios[i].addEventListener('change', function() {
+                togglePaymentForm(this.value);
+            });
+            if (radios[i].checked) {
+                togglePaymentForm(radios[i].value);
+            }
+        }
+        
+        var provinceSelect = document.getElementById('province');
+        if (provinceSelect && provinceSelect.value) {
+            updateShipping(provinceSelect.value);
+        }
+        
+        // Form validation on submit
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            var paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+            var errorBox = document.getElementById('payment-error');
+            var errorMessage = document.getElementById('payment-error-message');
+            
+            if (paymentMethod === 'card') {
+                var cardNumber = document.querySelector('input[name="card_number"]').value;
+                var cardExpiry = document.querySelector('input[name="card_expiry"]').value;
+                var cardCvv = document.querySelector('input[name="card_cvv"]').value;
+                var cardName = document.querySelector('input[name="card_name"]').value;
+                
+                if (!cardNumber || !cardExpiry || !cardCvv || !cardName) {
+                    errorMessage.textContent = 'Please fill in all card details to complete your order.';
+                    errorBox.classList.remove('hidden');
+                    e.preventDefault();
+                    return false;
+                }
+            }
+            
+            if (paymentMethod === 'bank_transfer') {
+                var paymentProof = document.querySelector('input[name="payment_proof"]').value;
+                
+                if (!paymentProof) {
+                    errorMessage.textContent = 'Please upload payment proof for bank transfer to complete your order.';
+                    errorBox.classList.remove('hidden');
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
+    };
 </script>
 @endsection

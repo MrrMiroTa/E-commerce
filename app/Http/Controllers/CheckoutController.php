@@ -75,6 +75,7 @@ class CheckoutController extends Controller
             'province' => 'required|string|max:100|in:Phnom Penh,Siem Reap,Battambang,Banteay Meanchey,Borkong,Kampong Cham,Kampong Chhnang,Kampong Speu,Kampong Thom,Kampot,Kandal,Kep,Koh Kong,Kratié,Mondul Kiri,Oddar Meanchey,Pailin,Pursat,Ratanakiri,Preah Sihanouk,Stung Treng,Svay Rieng,Takeo,Tbong Khmum',
             'shipping_address' => 'required|string',
             'payment_method' => 'required|in:cash,card,bank_transfer',
+            'payment_proof' => 'nullable|image|max:5120',
         ]);
 
         try {
@@ -128,6 +129,18 @@ class CheckoutController extends Controller
                 $tax = 0; // Tax removed
                 $total = $subtotal + $shipping;
 
+                // Handle payment proof upload for bank transfer
+                $paymentProofPath = null;
+                if ($request->payment_method === 'bank_transfer' && $request->hasFile('payment_proof')) {
+                    $paymentProofPath = $request->file('payment_proof')->store('payment_proofs', 'public');
+                }
+
+                // Build notes with payment details
+                $notes = $request->notes ?? '';
+                if ($request->payment_method === 'bank_transfer' && $request->transfer_reference) {
+                    $notes .= "\nBank Transfer Reference: " . $request->transfer_reference;
+                }
+
                 // Create order
                 $order = Order::create([
                     'order_number' => Order::generateOrderNumber(),
@@ -141,10 +154,15 @@ class CheckoutController extends Controller
                     'shipping_cost' => $shipping,
                     'total' => $total,
                     'status' => 'pending',
-                    'payment_status' => 'pending',
+                    'payment_status' => $request->payment_method === 'cash' ? 'pending' : 'pending',
                     'payment_method' => $request->payment_method,
-                    'notes' => $request->notes,
+                    'notes' => $notes,
                 ]);
+
+                // Store payment proof in order if uploaded
+                if ($paymentProofPath) {
+                    $order->update(['notes' => $order->notes . "\nPayment Proof: " . $paymentProofPath]);
+                }
 
                 // Create order items and update stock
                 foreach ($items as $item) {

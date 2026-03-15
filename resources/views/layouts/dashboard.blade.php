@@ -10,6 +10,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
+    <link rel="icon" href="../Icon.jpg" type="image/x-icon">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -108,19 +109,21 @@
 
             <!-- Flash Messages -->
             @if(session('success'))
-                <div class="px-6 pt-4">
+                <div id="success-message" class="px-6 pt-4">
                     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                         <span class="block sm:inline">{{ session('success') }}</span>
                     </div>
                 </div>
+                <script>setTimeout(function(){ document.getElementById('success-message').style.display = 'none'; }, 5000);</script>
             @endif
 
             @if(session('error'))
-                <div class="px-6 pt-4">
+                <div id="error-message" class="px-6 pt-4">
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                         <span class="block sm:inline">{{ session('error') }}</span>
                     </div>
                 </div>
+                <script>setTimeout(function(){ document.getElementById('error-message').style.display = 'none'; }, 5000);</script>
             @endif
 
             <!-- Content -->

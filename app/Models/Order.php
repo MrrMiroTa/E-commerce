@@ -64,12 +64,32 @@ class Order extends Model
 
     public static function generateOrderNumber(): string
     {
-        // Use uniqid for guaranteed uniqueness (includes microseconds)
-        $prefix = 'ORD';
+        // Generate order number with format: #ORD-Y-M-D-001
+        $prefix = '#ORD';
         $date = now()->format('Ymd');
-        $random = strtoupper(substr(uniqid('', true), -6));
-        $orderNumber = "{$prefix}-{$date}-{$random}";
-
-        return $orderNumber;
+        
+        // Get the last order created today to increment the number
+        $lastOrder = self::whereDate('created_at', today())
+            ->orderBy('id', 'desc')
+            ->first();
+        
+        if ($lastOrder) {
+            // Extract the last order number and increment
+            $lastNumber = $lastOrder->order_number;
+            $lastDate = substr($lastNumber, 5, 8); // Extract date part
+            
+            if ($lastDate === $date) {
+                // Same day, increment the counter
+                $lastCounter = (int)substr($lastNumber, -3);
+                $newCounter = str_pad($lastCounter + 1, 3, '0', STR_PAD_LEFT);
+            } else {
+                // New day, reset counter
+                $newCounter = '001';
+            }
+        } else {
+            $newCounter = '001';
+        }
+        
+        return "{$prefix}-{$date}-{$newCounter}";
     }
 }
