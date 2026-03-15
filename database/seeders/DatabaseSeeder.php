@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
                 [
                     'name' => 'Admin User',
                     'role' => 'admin',
-                    'password' => bcrypt($adminPassword ?? 'dev-admin-password'),
+                    'password' => bcrypt($adminPassword ?? 'password'),
                 ]
             );
         }
@@ -34,10 +34,7 @@ class DatabaseSeeder extends Seeder
         // Create categories (idempotent - uses firstOrCreate to avoid duplicates)
         $categories = [
             ['name' => 'Electronics', 'slug' => 'electronics', 'description' => 'Latest gadgets and devices'],
-            ['name' => 'Clothing', 'slug' => 'clothing', 'description' => 'Fashion for everyone'],
-            ['name' => 'Home & Garden', 'slug' => 'home-garden', 'description' => 'Everything for your home'],
-            ['name' => 'Sports & Outdoors', 'slug' => 'sports-outdoors', 'description' => 'Gear for active lifestyle'],
-            ['name' => 'Books', 'slug' => 'books', 'description' => 'Books for all ages'],
+
         ];
 
         foreach ($categories as $category) {
@@ -88,104 +85,7 @@ class DatabaseSeeder extends Seeder
                 'category_id' => 1,
             ],
             // Clothing
-            [
-                'name' => 'Classic Cotton T-Shirt',
-                'description' => 'Comfortable 100% cotton t-shirt in multiple colors.',
-                'price' => 24.99,
-                'stock_quantity' => 200,
-                'min_stock_level' => 50,
-                'sku' => 'CLTH-001',
-                'category_id' => 2,
-            ],
-            [
-                'name' => 'Running Shoes',
-                'description' => 'Lightweight breathable running shoes with cushioned sole.',
-                'price' => 89.99,
-                'sale_price' => 69.99,
-                'stock_quantity' => 40,
-                'min_stock_level' => 10,
-                'sku' => 'CLTH-002',
-                'category_id' => 2,
-                'is_featured' => true,
-            ],
-            [
-                'name' => 'Winter Jacket',
-                'description' => 'Waterproof insulated winter jacket with hood.',
-                'price' => 199.99,
-                'stock_quantity' => 15,
-                'min_stock_level' => 5,
-                'sku' => 'CLTH-003',
-                'category_id' => 2,
-            ],
-            // Home & Garden
-            [
-                'name' => 'Smart LED Bulb Set',
-                'description' => 'WiFi-enabled RGB LED bulbs, works with Alexa and Google Home.',
-                'price' => 59.99,
-                'stock_quantity' => 60,
-                'min_stock_level' => 15,
-                'sku' => 'HOME-001',
-                'category_id' => 3,
-                'is_featured' => true,
-            ],
-            [
-                'name' => 'Ceramic Coffee Mug Set',
-                'description' => 'Set of 4 handcrafted ceramic coffee mugs.',
-                'price' => 34.99,
-                'stock_quantity' => 80,
-                'min_stock_level' => 20,
-                'sku' => 'HOME-002',
-                'category_id' => 3,
-            ],
-            [
-                'name' => 'Bamboo Cutting Board',
-                'description' => 'Eco-friendly bamboo cutting board with juice groove.',
-                'price' => 29.99,
-                'sale_price' => 19.99,
-                'stock_quantity' => 5,
-                'min_stock_level' => 10,
-                'sku' => 'HOME-003',
-                'category_id' => 3,
-            ],
-            // Sports
-            [
-                'name' => 'Yoga Mat Premium',
-                'description' => 'Non-slip eco-friendly yoga mat with carrying strap.',
-                'price' => 45.99,
-                'stock_quantity' => 35,
-                'min_stock_level' => 8,
-                'sku' => 'SPRT-001',
-                'category_id' => 4,
-            ],
-            [
-                'name' => 'Resistance Bands Set',
-                'description' => 'Complete set of 5 resistance bands for full-body workout.',
-                'price' => 24.99,
-                'stock_quantity' => 0,
-                'min_stock_level' => 15,
-                'sku' => 'SPRT-002',
-                'category_id' => 4,
-            ],
-            // Books
-            [
-                'name' => 'The Art of Coding',
-                'description' => 'Comprehensive guide to modern programming practices.',
-                'price' => 39.99,
-                'stock_quantity' => 25,
-                'min_stock_level' => 5,
-                'sku' => 'BOOK-001',
-                'category_id' => 5,
-            ],
-            [
-                'name' => 'Business Strategy 101',
-                'description' => 'Essential strategies for business success.',
-                'price' => 29.99,
-                'sale_price' => 22.99,
-                'stock_quantity' => 45,
-                'min_stock_level' => 10,
-                'sku' => 'BOOK-002',
-                'category_id' => 5,
-            ],
+           
         ];
 
         foreach ($products as $product) {
@@ -238,7 +138,7 @@ class DatabaseSeeder extends Seeder
                 'status' => $orderStatuses[array_rand($orderStatuses)],
                 'payment_status' => 'paid',
                 'payment_method' => 'cash',
-                'created_at' => now()->subDays(rand(0, 7)),
+                'created_at' => now(),
             ]);
 
             \App\Models\OrderItem::create([

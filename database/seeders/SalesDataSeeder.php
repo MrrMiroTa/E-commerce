@@ -26,11 +26,6 @@ class SalesDataSeeder extends Seeder
         // Create sample daily sales data for the past 7 days
         $dates = [
             ['date' => now()->subDays(6), 'orders' => 12, 'items' => 18, 'revenue' => 1250.00],
-            ['date' => now()->subDays(5), 'orders' => 15, 'items' => 22, 'revenue' => 1680.50],
-            ['date' => now()->subDays(4), 'orders' => 8, 'items' => 12, 'revenue' => 890.00],
-            ['date' => now()->subDays(3), 'orders' => 20, 'items' => 35, 'revenue' => 2150.75],
-            ['date' => now()->subDays(2), 'orders' => 18, 'items' => 28, 'revenue' => 1920.00],
-            ['date' => now()->subDays(1), 'orders' => 25, 'items' => 42, 'revenue' => 2680.25],
             ['date' => now(), 'orders' => 10, 'items' => 15, 'revenue' => 1150.00],
         ];
 

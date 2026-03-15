@@ -225,7 +225,7 @@ class DashboardController extends Controller
             'sale_price'      => 'nullable|numeric|min:0|lt:price',
             'stock_quantity'  => 'required|integer|min:0',
             'min_stock_level' => 'required|integer|min:0',
-            'sku'             => 'required|string|max:100|unique:products,sku',
+            'sku'             => 'required|string|max:100|regex:/^[A-Z]{4}[0-9]{4}$/|unique:products,sku',
             'category_id'     => 'required|exists:categories,id',
             'is_active'       => 'boolean',
             'is_featured'     => 'boolean',

@@ -281,7 +281,7 @@
         modal.classList.add('flex');
         
         // Load order details via fetch
-        fetch(`{{ url('dashboard/orders') }}/${orderId}/details`)
+        fetch(`https://${window.location.host}/dashboard/orders/${orderId}/details`)
             .then(response => response.text())
             .then(html => {
                 content.innerHTML = html;
