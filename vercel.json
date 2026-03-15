@@ -22,7 +22,7 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "true",
-        "APP_URL": "https://e-commerce-gbrk9b4eh-sophors-projects-77add18b.vercel.app/",
+        "APP_URL": "http://e-commerce-uzita.vercel.app/",
         "APP_KEY": "base64:M0K6Ue/M6OrP/12JjDh+yKNrtvz/22eOVjWFEX8qpiA=",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",

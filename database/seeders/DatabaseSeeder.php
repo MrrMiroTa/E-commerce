@@ -27,8 +27,10 @@ class DatabaseSeeder extends Seeder
                     'name' => 'Admin User',
                     'role' => 'admin',
                     'password' => bcrypt($adminPassword ?? 'password'),
-                ]
+                ],
+               
             );
+            
         }
 
         // Create categories (idempotent - uses firstOrCreate to avoid duplicates)
@@ -40,6 +42,16 @@ class DatabaseSeeder extends Seeder
         foreach ($categories as $category) {
             Category::firstOrCreate(['slug' => $category['slug']], $category);
         }
+
+        // Create specific user
+        User::firstOrCreate(
+            ['email' => 'mrruzita@gmail.com'],
+            [
+                'name' => 'Mrr Uzita',
+                'role' => 'user',
+                'password' => bcrypt('12345678'),
+            ]
+        );
 
         // Create products first (before orders that reference them)
         $products = [
